@@ -77,6 +77,14 @@ In diesem Kapitel beschreiben wir die Erstellung und Manipulation der Datenbank 
 
 [Manipulation (DML)](./dml.sql)
 
+[LogMessageAdd](./LogMessageAdd.sql)
+
+Die Stored Procedure `LogMessageAdd` fügt neue Log-Einträge zum entsprechenden Device hinzu.
+
+[v_logentries](./v_logentries.sql)
+
+Mit der View `v_logentries` kann unser Monitoring-System die nicht-quittierten Logs anzeigen.
+
 ## Arbeitsjournal
 Wann | Was | Dauer [h]
 --- | --- | ---
@@ -85,3 +93,5 @@ Wann | Was | Dauer [h]
 15.09.2019 | Definition DML | 2
 15.09.2019 | Dokumentation | 1
 24.01.2020 | Aufsetzen des GitHub-Repository | 1.5
+30.01.2020 | LogMessageAdd hinzugefügt | 1
+30.01.2020 | v_logentries hinzugefügt | 1.5
