@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS kunde
   konto_nr VARCHAR(12) NOT NULL DEFAULT " " ,
   bezeichnung VARCHAR(45) NOT NULL DEFAULT " " ,
   guthaben DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  betragslimit DECIMAL(10,2),
   PRIMARY KEY (kunde_id)
 );
 
