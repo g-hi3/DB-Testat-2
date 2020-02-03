@@ -79,7 +79,7 @@ In diesem Kapitel beschreiben wir die Erstellung und Manipulation der Datenbank 
 
 [Manuelle Fakturierung](./manuelleFakturierung.sql)
 
-In dieser Stored Procedure wird die Abrechnung getätigt. Bei der Abrechnung wird das vorhandene Guthaben des Kunden berücksichtigt und falls vorhanden in der Abrechnung vermerkt. Die abgerechneten Abrechnungspositionen werden mit einem Flag isfaktueriert markiert.
+In dieser Stored Procedure wird die Abrechnung getätigt. Bei der Abrechnung wird das vorhandene Guthaben des Kunden berücksichtigt und falls vorhanden in der Abrechnung vermerkt. Die abgerechneten Abrechnungspositionen werden mit einem Flag isfaktueriert markiert. Die manuelle Fakturierung erfolgt mit dem Aufruf der Stored Procedure PodBill unter Beigabe der Id des Pod's. 
 
 
 [Automatische Fakturierung](./AutomatischeFakturierung.sql)
