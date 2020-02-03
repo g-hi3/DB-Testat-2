@@ -98,4 +98,5 @@ Wann | Was | Dauer [h]
 30.01.2020 | Automatische Fakturierung | 2
 03.02.2020 | ERM angepasst | 1
 03.02.2020 | Dokumentation Fakturierung | 1
+03.02.2020 | DML angepasst | 1
 
