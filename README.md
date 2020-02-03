@@ -87,4 +87,5 @@ Wann | Was | Dauer [h]
 24.01.2020 | Aufsetzen des GitHub-Repository | 1.5
 30.01.2020 | Stored Procedure PodBill | 2
 30.01.2020 | Automatische Fakturierung | 2
+03.02.2020 | ERM angepasst | 1
 
