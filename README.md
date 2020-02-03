@@ -77,6 +77,15 @@ In diesem Kapitel beschreiben wir die Erstellung und Manipulation der Datenbank 
 
 [Manipulation (DML)](./dml.sql)
 
+[Manuelle Fakturierung](./manuelleFakturierung.sql)
+
+In dieser Stored Procedure wird die Abrechnung getätigt. Bei der Abrechnung wird das vorhandene Guthaben des Kunden berücksichtigt und falls vorhanden in der Abrechnung vermerkt. Die abgerechneten Abrechnungspositionen werden mit einem Flag isfaktueriert markiert.
+
+
+[Automatische Fakturierung](./AutomatischeFakturierung.sql)
+
+Hier wird mittels eines Event automatisch eine Fakturierung ausgelöst, falls der Gesamtbetrag aller offenen Abrechnungspositionen das Betragslimit des Kunden überschreitet, oder die älteste Position älter als 3 Monate alt ist oder am 28. des Monats der Gesamtbetrag 1000.- Fr. übersteigt. Dies indem die Stored Procedure der manuellen Fakturierung aufgerufen wird.
+
 ## Arbeitsjournal
 Wann | Was | Dauer [h]
 --- | --- | ---
@@ -88,4 +97,5 @@ Wann | Was | Dauer [h]
 30.01.2020 | Stored Procedure PodBill | 2
 30.01.2020 | Automatische Fakturierung | 2
 03.02.2020 | ERM angepasst | 1
+03.02.2020 | Dokumentation Fakturierung | 1
 
