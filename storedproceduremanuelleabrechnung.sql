@@ -2,7 +2,7 @@ use testat;
 DELIMITER $$
 CREATE PROCEDURE PodBill
 (
-	IN PodBezeichnung VARCHAR(45)
+	IN PodId INT
 )
 BEGIN	
     DECLARE abrechpod INT;
@@ -11,8 +11,8 @@ BEGIN
     DECLARE guthabenvar DECIMAL(10,2);
     DECLARE nettopreisvar DECIMAL(10,2);    
     
-    SELECT point_of_delivery_id, pod_kunde INTO abrechpod, kundId FROM point_of_delivery WHERE bezeichnung = PodBezeichnung; 
-    SELECT Sum(stueckpreis * menge) INTO bruttopreisvar FROM abrechnungsposition WHERE pointofDelivery = abrechpod AND isfakturiert = false; 						
+    SELECT  pod_kunde INTO  kundId FROM point_of_delivery WHERE point_of_delivery_id = PodId; 
+    SELECT Sum(stueckpreis * menge) INTO bruttopreisvar FROM abrechnungsposition WHERE pointofDelivery = PodId AND isfakturiert = false; 						
 	SELECT guthaben INTO guthabenvar FROM kunde WHERE kunde_id = kundId;
     
     IF guthabenvar < bruttopreisvar AND guthabenvar > 0 THEN
@@ -30,10 +30,10 @@ BEGIN
         WHERE pod_kunde = kundId;
 	 END IF; 
 	IF bruttopreisvar > 0 THEN
-	INSERT INTO abrechnung (abrechnung_pod, bruttopreis,usedguthaben,nettopreis) VALUES ( abrechpod,bruttopreisvar, guthabenvar,nettopreisvar);
+	INSERT INTO abrechnung (abrechnung_pod, bruttopreis,usedguthaben,nettopreis) VALUES ( PodId,bruttopreisvar, guthabenvar,nettopreisvar);
     UPDATE abrechnungsposition
     SET isFakturiert = true
-    WHERE pointofDelivery = abrechpod;
+    WHERE pointofDelivery = PodId;
     END IF;
 END$$
 DELIMITER ;
@@ -56,21 +56,12 @@ BEGIN
 		IF done THEN
 			LEAVE loop_beg;
             END IF;
-		SELECT COUNT(*) INTO olderpos FROM abrechnungsposition WHERE  (MONTH(GETDATE()) - MONTH(buchungsdatum)) > 3 AND isfakturiert = false;        
-        IF olderpos > 0 THEN
-			SELECT bezeichnung INTO varbez FROM point_of_delivery WHERE point_of_delivery_id = varpodId;
-            CALL PodBill(varbez);
+		SELECT COUNT(*) INTO olderpos FROM abrechnungsposition WHERE  (MONTH(GETDATE()) - MONTH(buchungsdatum)) > 3 AND isfakturiert = false;
+        SELECT SUM(menge * stueckpreis) INTO varsumme FROM abrechnungsposition WHERE pointofDelivery = varpodId AND isfakturiert = false;
+        SELECT betragslimit INTO varlimit FROM kunde WHERE kunde_id = (SELECT pod_kunde FROM point_of_delivery WHERE point_of_delivery_id = varpodId);
+        IF olderpos > 0 OR varsumme > varlimit OR (DAYOFMONTH(CURDATE()) = 28 AND varsumme > 1000) THEN
+             CALL PodBill(varpodId);
 		END IF;        
-		SELECT SUM(menge * stueckpreis) INTO varsumme FROM abrechnungsposition WHERE pointofDelivery = varpodId AND isfakturiert = false;
-        SELECT betragslimit INTO varlimit FROM kunde WHERE kunde_id = (SELECT pod_kunde FROM point_of_delivery WHERE point_of_delivery_id = varpodId);        
-        IF varsumme > varlimit THEN
-			SELECT bezeichnung INTO varbez FROM point_of_delivery WHERE point_of_delivery_id = varpodId;
-            CALL PodBill(varbez);
-		END IF; 
-		IF DAYOFMONTH(CURDATE()) = 28 AND varsumme > 1000 THEN
-			SELECT bezeichnung INTO varbez FROM point_of_delivery WHERE point_of_delivery_id = varpodId;
-            CALL PodBill(varbez);
-		END IF;			
     END LOOP;
     CLOSE cursor_abraut;
     END$$

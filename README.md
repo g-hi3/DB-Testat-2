@@ -85,3 +85,6 @@ Wann | Was | Dauer [h]
 15.09.2019 | Definition DML | 2
 15.09.2019 | Dokumentation | 1
 24.01.2020 | Aufsetzen des GitHub-Repository | 1.5
+30.01.2020 | Stored Procedure PodBill | 2
+30.01.2020 | Automatische Fakturierung | 2
+
