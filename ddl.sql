@@ -105,7 +105,8 @@ CREATE TABLE IF NOT EXISTS abrechnungsposition
   stueckpreis DECIMAL(10,2) NOT NULL,
   menge INT NOT NULL DEFAULT 0,
   pointofDelivery INT UNSIGNED,
-  isfakturiert BOOL DEFAULT false, 
+  isfakturiert BOOL DEFAULT false,
+  buchungsdatum DATETIME NOT NULL,
   PRIMARY KEY (abrechnungspos_id),
   FOREIGN KEY(pointofDelivery) REFERENCES point_of_delivery(point_of_delivery_id)
 );

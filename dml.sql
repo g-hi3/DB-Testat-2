@@ -1,29 +1,25 @@
 use testat;
 
 INSERT INTO kunde
-(konto_nr, bezeichnung)
+(konto_nr, bezeichnung, guthaben, betragslimit)
 VALUES
-("01-12345-1", "Treuhand AG" );
+("01-12345-1", "Treuhand AG", 100.00,900.00 );
 
 INSERT INTO adresse
 (land, ort, zip_code, strasse, hausnummer)
 VALUES
 ("Schweiz", "Gossau", "9200", "Hauptstrasse", 5);
 
-INSERT INTO networkinterface
-(duplextype, speed)
-VALUES
-("Full-Duplex",  "1000");
-
-INSERT INTO networkinterface
-(duplextype, speed)
-VALUES
-("Half-Duplex",  "100");
 
 INSERT INTO point_of_delivery
 (bezeichnung, pod_kunde, pod_adresse)
 VALUES
 ("Muster Treuhand AG", 1 , 1);
+
+INSERT INTO networkinterface
+(duplextype, speed, pointofdelivery)
+VALUES
+("Full-Duplex",  "1000", 1),("Half-Duplex", "100",1);
 
 INSERT INTO kontaktperson
 (kundenname, priorität, pointofdelivery)
@@ -45,14 +41,9 @@ INSERT INTO credentials
 VALUES
 ("MusterUser", "MusterPassword", "public", 1);
 
-INSERT INTO abrechnung
-(abrechnung_pod, abrechnung_adresse, abrechnung_netint)
-VALUES
-(1, 1, 2);
 
 INSERT INTO abrechnungsposition
-(produktbeschreibung, stueckpreis, menge, abrechnung)
+(produktbeschreibung, stueckpreis, menge, pointofDelivery, isfakturiert, buchungsdatum )
 VALUES
-("Netzwerkinstallation XY", 1, 1, 1);
-
+("Netzwerkinstallation XY", 15.00, 3, 1,false,'03.03.2020'), ("Modem", 490.00, 1, 1,false,'03.03.2020');
 
