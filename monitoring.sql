@@ -1,12 +1,5 @@
 USE testat;
 
-CREATE TABLE acknowledged(
-  acknowledged_id int unsigned,
-  is_acknowledged bool,
-  foreign key (acknowledged_id) references logmessage(logmessage_id),
-  primary key (acknowledged_id)
-);
-
 CREATE OR REPLACE VIEW v_logentries AS SELECT
     logmessage_id as id,
     (SELECT point_of_delivery_id FROM point_of_delivery WHERE pod_adresse = (
