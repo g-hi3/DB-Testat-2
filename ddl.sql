@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS testat
+﻿CREATE DATABASE IF NOT EXISTS testat
   DEFAULT CHARACTER SET utf8;
 
 USE testat;
@@ -109,4 +109,12 @@ CREATE TABLE IF NOT EXISTS abrechnungsposition
   buchungsdatum DATETIME NOT NULL,
   PRIMARY KEY (abrechnungspos_id),
   FOREIGN KEY(pointofDelivery) REFERENCES point_of_delivery(point_of_delivery_id)
+);
+
+CREATE TABLE IF NOT EXISTS acknowledged
+(
+  acknowledged_id int unsigned,
+  is_acknowledged bool,
+  foreign key (acknowledged_id) references logmessage(logmessage_id),
+  primary key (acknowledged_id)
 );
