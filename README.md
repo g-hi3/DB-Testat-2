@@ -81,7 +81,7 @@ In diesem Kapitel beschreiben wir die Erstellung und Manipulation der Datenbank 
 
 Die Stored Procedure `LogMessageAdd` fügt neue Log-Einträge zum entsprechenden Device hinzu.
 
-[v_logentries](./v_logentries.sql)
+[v_logentries](./monitoring.sql)
 
 Mit der View `v_logentries` kann unser Monitoring-System die nicht-quittierten Logs anzeigen.
 Für die View wurde ausserdem eine neue Tabelle `acknowledged` angelegt, welche den Status des Monitoring pro Logmessage überprüft.
@@ -90,7 +90,6 @@ Die View zeigt auch logmessages an, für die es in `acknowledged` keinen Eintrag
 [Manuelle Fakturierung](./manuelleFakturierung.sql)
 
 In dieser Stored Procedure wird die Abrechnung getätigt. Bei der Abrechnung wird das vorhandene Guthaben des Kunden berücksichtigt und falls vorhanden in der Abrechnung vermerkt. Die abgerechneten Abrechnungspositionen werden mit einem Flag isfaktueriert markiert. Die manuelle Fakturierung erfolgt mit dem Aufruf der Stored Procedure PodBill unter Beigabe der Id des Pod's. 
-
 
 [Automatische Fakturierung](./AutomatischeFakturierung.sql)
 
@@ -104,12 +103,11 @@ Wann | Was | Dauer [h]
 15.09.2019 | Definition DML | 2
 15.09.2019 | Dokumentation | 1
 24.01.2020 | Aufsetzen des GitHub-Repository | 1.5
-<<<<<<< HEAD
 30.01.2020 | LogMessageAdd hinzugefügt | 1
 30.01.2020 | v_logentries hinzugefügt | 1.5
-=======
 30.01.2020 | Stored Procedure PodBill | 2
 30.01.2020 | Automatische Fakturierung | 2
 03.02.2020 | ERM angepasst | 1
 03.02.2020 | Dokumentation Fakturierung | 1
 03.02.2020 | DML angepasst | 1
+17.02.2020 | Monitoring.sql korrigiert | 0.5
