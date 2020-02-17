@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS kunde
   kunde_id INT UNSIGNED AUTO_INCREMENT,
   konto_nr VARCHAR(12) NOT NULL DEFAULT " " ,
   bezeichnung VARCHAR(45) NOT NULL DEFAULT " " ,
+  guthaben DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  betragslimit DECIMAL(10,2),
   PRIMARY KEY (kunde_id)
 );
 
@@ -18,18 +20,9 @@ CREATE TABLE IF NOT EXISTS adresse
   ort VARCHAR(45) NOT NULL DEFAULT " ",
   zip_code VARCHAR(45) NOT NULL DEFAULT " ",
   strasse VARCHAR(45) NOT NULL DEFAULT " ",
-  hausnummer INT NOT NULL DEFAULT 0,
+  hausnummer varchar(10) NOT NULL,
   PRIMARY KEY (adresse_id)
 );
-
-CREATE TABLE IF NOT EXISTS networkinterface
-(
-  networkinterface_id INT UNSIGNED AUTO_INCREMENT,
-  duplextype VARCHAR(45) NOT NULL DEFAULT " ",
-  speed VARCHAR(45) NOT NULL DEFAULT " ",
-  PRIMARY KEY (networkinterface_id)
-);
-
 CREATE TABLE IF NOT EXISTS point_of_delivery
 (
   point_of_delivery_id INT UNSIGNED AUTO_INCREMENT,
@@ -39,6 +32,15 @@ CREATE TABLE IF NOT EXISTS point_of_delivery
   PRIMARY KEY (point_of_delivery_id),
   FOREIGN KEY (pod_kunde) REFERENCES kunde(kunde_id),
   FOREIGN KEY (pod_adresse) REFERENCES adresse(adresse_id)
+);
+CREATE TABLE IF NOT EXISTS networkinterface
+(
+  networkinterface_id INT UNSIGNED AUTO_INCREMENT,
+  duplextype VARCHAR(45) NOT NULL DEFAULT " ",
+  speed VARCHAR(45) NOT NULL DEFAULT " ",
+  pointofdelivery INT UNSIGNED,
+  PRIMARY KEY (networkinterface_id),
+  FOREIGN KEY(pointofdelivery) REFERENCES point_of_delivery(point_of_delivery_id)
 );
 
 CREATE TABLE IF NOT EXISTS kontaktperson
@@ -89,22 +91,22 @@ CREATE TABLE IF NOT EXISTS abrechnung
 (
   abrechnung_id INT UNSIGNED AUTO_INCREMENT,
   abrechnung_pod INT UNSIGNED,
-  abrechnung_adresse INT UNSIGNED,
-  abrechnung_netint INT UNSIGNED,
+  bruttopreis DECIMAL(10,2) NOT NULL,
+  usedguthaben DECIMAL(10,2) NULL,
+  nettopreis DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (abrechnung_id),
-  FOREIGN KEY (abrechnung_pod) REFERENCES point_of_delivery(point_of_delivery_id),
-  FOREIGN KEY (abrechnung_adresse) REFERENCES adresse(adresse_id),
-  FOREIGN KEY (abrechnung_netint) REFERENCES networkinterface(networkinterface_id)
+  FOREIGN KEY (abrechnung_pod) REFERENCES point_of_delivery(point_of_delivery_id)  
 );
 
 CREATE TABLE IF NOT EXISTS abrechnungsposition
 (
   abrechnungspos_id INT UNSIGNED AUTO_INCREMENT,
   produktbeschreibung VARCHAR(45) NOT NULL DEFAULT " ",
-  stueckpreis DECIMAL NOT NULL,
+  stueckpreis DECIMAL(10,2) NOT NULL,
   menge INT NOT NULL DEFAULT 0,
-  abrechnung INT UNSIGNED,
+  pointofDelivery INT UNSIGNED,
+  isfakturiert BOOL DEFAULT false,
+  buchungsdatum DATETIME NOT NULL,
   PRIMARY KEY (abrechnungspos_id),
-  FOREIGN KEY (abrechnung) REFERENCES abrechnung(abrechnung_id)
+  FOREIGN KEY(pointofDelivery) REFERENCES point_of_delivery(point_of_delivery_id)
 );
-
