@@ -77,6 +77,24 @@ In diesem Kapitel beschreiben wir die Erstellung und Manipulation der Datenbank 
 
 [Manipulation (DML)](./dml.sql)
 
+[Create_UserandPermissions](./Create_UsersandPermissions.sql)
+
+Hier werden die DB-User erstellt und ihnen die jeweiligen Berechtigungen gemäss folgender Beschreibung gegeben.
+
+- Der Geschäftsführer hat zu sämtlichen Daten im System zugriff.
+- Nur der Geschäftsführer kann finanzielle Aspekte im System ansehen.
+- Nur Abteilungsleiter können neue PODs oder Locations anlegen.
+- Sachbearbeiter können bis auf vorgängig definierte Ausnahmen alles einseehen und bearbeiten.
+- Logger haben ausschliesslich die Berechtigung Logeinträge zu erzeugen.
+- Geräte-Monitoring-Tools können ausschliesslich Logeinträge abfragen und ggf. quittieren.
+
+[StatisticViews](./StatisticViews.sql)
+
+In diesen Views werden die Portauslastungen der Geräte gemäss deren Geräteklassen pro Location und pro Pod angezeigt.
+
+[view_FreePorts](./view_Freeports.sql)
+In dieser View werden alle freien Netzwerkinterfaces pro Gerät aufgelistet.
+
 [LogMessageAdd](./LogMessageAdd.sql)
 
 Die Stored Procedure `LogMessageAdd` fügt neue Log-Einträge zum entsprechenden Device hinzu.
@@ -111,3 +129,4 @@ Wann | Was | Dauer [h]
 03.02.2020 | Dokumentation Fakturierung | 1
 03.02.2020 | DML angepasst | 1
 17.02.2020 | Monitoring.sql korrigiert | 0.5
+19.02.2020 | Statistic Views, User, Permissions, Doku | 4

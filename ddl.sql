@@ -1,6 +1,6 @@
-﻿CREATE DATABASE IF NOT EXISTS testat
+DROP SCHEMA IF EXISTS testat;
+CREATE DATABASE IF NOT EXISTS testat
   DEFAULT CHARACTER SET utf8;
-
 USE testat;
 
 CREATE TABLE IF NOT EXISTS kunde
@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS kunde
   betragslimit DECIMAL(10,2),
   PRIMARY KEY (kunde_id)
 );
-
 CREATE TABLE IF NOT EXISTS adresse
 (
   adresse_id INT UNSIGNED AUTO_INCREMENT,
@@ -33,16 +32,22 @@ CREATE TABLE IF NOT EXISTS point_of_delivery
   FOREIGN KEY (pod_kunde) REFERENCES kunde(kunde_id),
   FOREIGN KEY (pod_adresse) REFERENCES adresse(adresse_id)
 );
+CREATE TABLE IF NOT EXISTS location(
+	location_id INT AUTO_INCREMENT,
+    Location_Name VARCHAR(100) NOT NULL,
+    PRIMARY KEY (location_id)
+);
 CREATE TABLE IF NOT EXISTS networkinterface
 (
   networkinterface_id INT UNSIGNED AUTO_INCREMENT,
   duplextype VARCHAR(45) NOT NULL DEFAULT " ",
   speed VARCHAR(45) NOT NULL DEFAULT " ",
   pointofdelivery INT UNSIGNED,
+  locationid INT NOT NULL,
   PRIMARY KEY (networkinterface_id),
-  FOREIGN KEY(pointofdelivery) REFERENCES point_of_delivery(point_of_delivery_id)
+  FOREIGN KEY(pointofdelivery) REFERENCES point_of_delivery(point_of_delivery_id),
+  FOREIGN KEY(locationid) REFERENCES location(location_id)
 );
-
 CREATE TABLE IF NOT EXISTS kontaktperson
 (
   kontaktperson_id INT UNSIGNED AUTO_INCREMENT,
@@ -52,19 +57,36 @@ CREATE TABLE IF NOT EXISTS kontaktperson
   PRIMARY KEY (kontaktperson_id),
   FOREIGN KEY (pointofdelivery) REFERENCES point_of_delivery(point_of_delivery_id)
 );
-
+CREATE TABLE IF NOT EXISTS devicecategory
+(
+	categoryId INT auto_increment NOT NULL,
+    CategoryName VARCHAR(100) NOT NULL,
+    primary key (categoryId)
+);
 CREATE TABLE IF NOT EXISTS device
 (
   device_id INT UNSIGNED AUTO_INCREMENT,
+  devicecategory INT NOT NULL,
   hostname VARCHAR(45) NOT NULL DEFAULT " ",
   ip_adresse VARCHAR(45) NOT NULL DEFAULT " ",
+  anzahlports int not null DEFAULT 1,
   device_adresse INT UNSIGNED,
   device_netint INT UNSIGNED,
   PRIMARY KEY (device_id),
   FOREIGN KEY (device_adresse) REFERENCES adresse(adresse_id),
-  FOREIGN KEY (device_netint) REFERENCES networkinterface(networkinterface_id)
+  FOREIGN KEY (device_netint) REFERENCES networkinterface(networkinterface_id),
+  FOREIGN KEY (devicecategory) REFERENCES devicecategory(categoryId)
 );
-
+CREATE TABLE IF NOT EXISTS ports(
+	ports_id INT UNSIGNED AUTO_INCREMENT,
+    device_Id INT UNSIGNED NOT NULL,
+    portNumber INT NOT NULL,
+    isUsed BOOL NOT NULL default false,
+    port_netint INT UNSIGNED NOT NULL,
+    PRIMARY KEY(ports_id),
+    FOREIGN KEY (port_netint) REFERENCES networkinterface(networkinterface_id),
+    FOREIGN KEY (device_Id) REFERENCES device(device_id)
+);
 CREATE TABLE IF NOT EXISTS logmessage
 (
   logmessage_id INT UNSIGNED AUTO_INCREMENT,
@@ -75,7 +97,6 @@ CREATE TABLE IF NOT EXISTS logmessage
   PRIMARY KEY (logmessage_id),
   FOREIGN KEY (Device) REFERENCES device(device_id)
 );
-
 CREATE TABLE IF NOT EXISTS credentials
 (
   credentials_id INT UNSIGNED AUTO_INCREMENT,
@@ -97,7 +118,6 @@ CREATE TABLE IF NOT EXISTS abrechnung
   PRIMARY KEY (abrechnung_id),
   FOREIGN KEY (abrechnung_pod) REFERENCES point_of_delivery(point_of_delivery_id)  
 );
-
 CREATE TABLE IF NOT EXISTS abrechnungsposition
 (
   abrechnungspos_id INT UNSIGNED AUTO_INCREMENT,
@@ -110,7 +130,6 @@ CREATE TABLE IF NOT EXISTS abrechnungsposition
   PRIMARY KEY (abrechnungspos_id),
   FOREIGN KEY(pointofDelivery) REFERENCES point_of_delivery(point_of_delivery_id)
 );
-
 CREATE TABLE IF NOT EXISTS acknowledged
 (
   acknowledged_id int unsigned,
